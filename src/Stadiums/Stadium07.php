@@ -78,7 +78,7 @@ class Stadium07 extends BaseStadium implements StadiumInterface
                 $racerNumber = str_replace('\'', '', $comments[$index + 2]->value);
             }
 
-            if (preg_match("/[ぁ-ん]+|[ァ-ヴー]+|[一-龠]/u", $comment->value)) {
+            if (preg_match('/[\p{Hiragana}\p{Katakana}\p{Han}ー。、]/u', $comment->value)) {
                 $$functionName[$racerNumber] = str_replace('\'', '', $comment->value);
             }
         }
