@@ -50,9 +50,7 @@ abstract class BaseStadium
      */
     protected function filterByClassPrefix(Crawler $crawler, string $prefix): array
     {
-        return $crawler->filterXPath('//*[starts-with(@class, \'' . ltrim($prefix, '.') . '\')]')->each(function ($node) {
-            return $node->text();
-        });
+        return $crawler->filterXPath('//*[starts-with(@class, \'' . ltrim($prefix, '.') . '\')]')->each(fn($node) => $node->text());
     }
 
     /**
