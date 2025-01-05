@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Boatrace\Sakura\Stadiums;
 
 use Carbon\CarbonImmutable as Carbon;
+use InvalidArgumentException;
 
 /**
  * @author shimomo
@@ -29,19 +30,26 @@ class Stadium12 extends BaseStadium implements StadiumInterface
         $timeFormat = '%s/tbody[%d]/tr[1]/td[%d]';
 
         foreach (range(1, 6) as $bracket) {
-            $xpath = sprintf($racerNameFormat, $baseXpath, $bracket);
-            $response['bracket' . $bracket . 'RacerName'] =
-                $this->removeSpace($crawler->filterXPath($xpath)->text());
+            try {
+                $xpath = sprintf($racerNameFormat, $baseXpath, $bracket);
+                $response['bracket' . $bracket . 'RacerName'] =
+                    $this->removeSpace($crawler->filterXPath($xpath)->text());
 
-            foreach (range(5, 7) as $key) {
-                $xpath = sprintf($timeFormat, $baseXpath, $bracket, $key);
-                $response[
-                    match ($key) {
-                        5 => 'bracket' . $bracket . 'ExhibitionTime',
-                        6 => 'bracket' . $bracket . 'LapTime',
-                        7 => 'bracket' . $bracket . 'TurnTime',
-                    }
-                ] = (float) $crawler->filterXPath($xpath)->text();
+                foreach (range(5, 7) as $key) {
+                    $xpath = sprintf($timeFormat, $baseXpath, $bracket, $key);
+                    $response[
+                        match ($key) {
+                            5 => 'bracket' . $bracket . 'ExhibitionTime',
+                            6 => 'bracket' . $bracket . 'LapTime',
+                            7 => 'bracket' . $bracket . 'TurnTime',
+                        }
+                    ] = (float) $crawler->filterXPath($xpath)->text();
+                }
+            } catch (InvalidArgumentException $exception) {
+                $response['bracket' . $bracket . 'RacerName'] = '欠場';
+                $response['bracket' . $bracket . 'ExhibitionTime'] = 0.0;
+                $response['bracket' . $bracket . 'LapTime'] = 0.0;
+                $response['bracket' . $bracket . 'TurnTime'] = 0.0;
             }
         }
 
