@@ -32,24 +32,24 @@ class Stadium12 extends BaseStadium implements StadiumInterface
         foreach (range(1, 6) as $bracket) {
             try {
                 $xpath = sprintf($racerNameFormat, $baseXpath, $bracket);
-                $response['bracket' . $bracket . 'RacerName'] =
+                $response['bracket_' . $bracket . '_racer_name'] =
                     $this->removeSpace($crawler->filterXPath($xpath)->text());
 
                 foreach (range(5, 7) as $key) {
                     $xpath = sprintf($timeFormat, $baseXpath, $bracket, $key);
                     $response[
                         match ($key) {
-                            5 => 'bracket' . $bracket . 'ExhibitionTime',
-                            6 => 'bracket' . $bracket . 'LapTime',
-                            7 => 'bracket' . $bracket . 'TurnTime',
+                            5 => 'bracket_' . $bracket . '_exhibition_time',
+                            6 => 'bracket_' . $bracket . '_lap_time',
+                            7 => 'bracket_' . $bracket . '_turn_time',
                         }
                     ] = (float) $crawler->filterXPath($xpath)->text();
                 }
             } catch (InvalidArgumentException $exception) {
-                $response['bracket' . $bracket . 'RacerName'] = '欠場';
-                $response['bracket' . $bracket . 'ExhibitionTime'] = 0.0;
-                $response['bracket' . $bracket . 'LapTime'] = 0.0;
-                $response['bracket' . $bracket . 'TurnTime'] = 0.0;
+                $response['bracket_' . $bracket . '_racer_name'] = '欠場';
+                $response['bracket_' . $bracket . '_exhibition_time'] = 0.0;
+                $response['bracket_' . $bracket . '_lap_time'] = 0.0;
+                $response['bracket_' . $bracket . '_turn_time'] = 0.0;
             }
         }
 

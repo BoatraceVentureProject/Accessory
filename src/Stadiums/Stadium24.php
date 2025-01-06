@@ -35,15 +35,15 @@ class Stadium24 extends BaseStadium implements StadiumInterface
         ]);
 
         foreach (range(1, 6) as $bracket) {
-            $response['bracket' . $bracket . 'RacerName'] =
+            $response['bracket_' . $bracket . '_racer_name'] =
                 $this->removeSpace($times['.tei' . $bracket][1] ?? '');
-            $response['bracket' . $bracket . 'ExhibitionTime'] =
+            $response['bracket_' . $bracket . '_exhibition_time'] =
                 (float) ($times['.tei' . $bracket][3] ?? 0);
-            $response['bracket' . $bracket . 'LapTime'] =
+            $response['bracket_' . $bracket . '_lap_time'] =
                 (float) ($times['.tei' . $bracket][4] ?? 0);
-            $response['bracket' . $bracket . 'TurnTime'] =
+            $response['bracket_' . $bracket . '_turn_time'] =
                 (float) ($times['.tei' . $bracket][5] ?? 0);
-            $response['bracket' . $bracket . 'StraightTime'] =
+            $response['bracket_' . $bracket . '_straight_time'] =
                 (float) ($times['.tei' . $bracket][6] ?? 0);
         }
 
@@ -82,15 +82,15 @@ class Stadium24 extends BaseStadium implements StadiumInterface
                 $matches[1] = $subject;
             }
 
-            $response['bracket' . $bracket . 'RacerName'] =
+            $response['bracket_' . $bracket . '_racer_name'] =
                 $this->removeSpace($comments['.tei' . $bracket][1] ?? '');
-            $response['bracket' . $bracket . 'RacerComment1Label'] = '前日コメント';
-            $response['bracket' . $bracket . 'RacerComment1'] =
+            $response['bracket_' . $bracket . '_racer_comment_1_label'] = '前日コメント';
+            $response['bracket_' . $bracket . '_racer_comment_1'] =
                 $this->formatComment($matches[1]);
 
             if (count($matches) >= 3) {
-                $response['bracket' . $bracket . 'RacerComment2Label'] = '当日コメント';
-                $response['bracket' . $bracket . 'RacerComment2'] =
+                $response['bracket_' . $bracket . '_racer_comment_2_label'] = '当日コメント';
+                $response['bracket_' . $bracket . '_racer_comment_2'] =
                     $this->formatComment($matches[2]);
             }
         }

@@ -31,7 +31,7 @@ class Stadium02 extends BaseStadium implements StadiumInterface
         foreach (range(1, 6) as $bracket) {
             $xpath = sprintf($racerNameFormat, $bracket);
             if ($crawler->filterXPath($xpath)->count()) {
-                $response['bracket' . $bracket . 'RacerName'] =
+                $response['bracket_' . $bracket . '_racer_name'] =
                     $this->removeSpace($crawler->filterXPath($xpath)->text());
             }
 
@@ -40,10 +40,10 @@ class Stadium02 extends BaseStadium implements StadiumInterface
                 if ($crawler->filterXPath($xpath)->count()) {
                     $response[
                         match ($key) {
-                            'ttime' => 'bracket' . $bracket . 'ExhibitionTime',
-                            'rnd' => 'bracket' . $bracket . 'LapTime',
-                            'cnr' => 'bracket' . $bracket . 'TurnTime',
-                            'str' => 'bracket' . $bracket . 'StraightTime',
+                            'ttime' => 'bracket_' . $bracket . '_exhibition_time',
+                            'rnd' => 'bracket_' . $bracket . '_lap_time',
+                            'cnr' => 'bracket_' . $bracket . '_turn_time',
+                            'str' => 'bracket_' . $bracket . '_straight_time',
                         }
                     ] = (float) $crawler->filterXPath($xpath)->text();
                 }

@@ -30,11 +30,11 @@ class Stadium07 extends BaseStadium implements StadiumInterface
         $chunkTimes = array_chunk($times['.score'], 4);
 
         foreach (range(1, 6) as $bracket) {
-            $response['bracket' . $bracket . 'RacerName'] = $this->removeSpace($times['.name'][$bracket] ?? '');
-            $response['bracket' . $bracket . 'ExhibitionTime'] = (float) ($chunkTimes[$bracket][0] ?? 0);
-            $response['bracket' . $bracket . 'LapTime'] = (float) ($chunkTimes[$bracket][1] ?? 0);
-            $response['bracket' . $bracket . 'TurnTime'] = (float) ($chunkTimes[$bracket][2] ?? 0);
-            $response['bracket' . $bracket . 'StraightTime'] = (float) ($chunkTimes[$bracket][3] ?? 0);
+            $response['bracket_' . $bracket . '_racer_name'] = $this->removeSpace($times['.name'][$bracket] ?? '');
+            $response['bracket_' . $bracket . '_exhibition_time'] = (float) ($chunkTimes[$bracket][0] ?? 0);
+            $response['bracket_' . $bracket . '_lap_time'] = (float) ($chunkTimes[$bracket][1] ?? 0);
+            $response['bracket_' . $bracket . '_turn_time'] = (float) ($chunkTimes[$bracket][2] ?? 0);
+            $response['bracket_' . $bracket . '_straight_time'] = (float) ($chunkTimes[$bracket][3] ?? 0);
         }
 
         return $response;
@@ -90,18 +90,18 @@ class Stadium07 extends BaseStadium implements StadiumInterface
 
         foreach (range(1, 6) as $bracket) {
             $racerNumber = (int) ($racers['.number'][$bracket - 1] ?? 0);
-            $response['bracket' . $bracket . 'RacerName'] =
+            $response['bracket_' . $bracket . '_racer_name'] =
                 $this->removeSpace($racers['.name'][$bracket] ?? '');
 
             if (isset($todayComments[$racerNumber])) {
-                $response['bracket' . $bracket . 'RacerComment1Label'] = '前日コメント';
-                $response['bracket' . $bracket . 'RacerComment1'] =
+                $response['bracket_' . $bracket . '_racer_comment_1_label'] = '前日コメント';
+                $response['bracket_' . $bracket . '_racer_comment_1'] =
                     $this->formatComment($todayComments[$racerNumber]);
             }
 
             if (isset($todayNewComments[$racerNumber])) {
-                $response['bracket' . $bracket . 'RacerComment2Label'] = '当日コメント';
-                $response['bracket' . $bracket . 'RacerComment2'] =
+                $response['bracket_' . $bracket . '_racer_comment_2_label'] = '当日コメント';
+                $response['bracket_' . $bracket . '_racer_comment_2'] =
                     $this->formatComment($todayNewComments[$racerNumber]);
             }
         }

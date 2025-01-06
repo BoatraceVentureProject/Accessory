@@ -28,11 +28,11 @@ class Stadium21 extends BaseStadium implements StadiumInterface
         $times = $this->filterByKeys($crawler, ['.com-rname', '.col6', '.col7', '.col8', '.col9']);
 
         foreach (range(1, 6) as $bracket) {
-            $response['bracket' . $bracket . 'RacerName'] = $this->removeSpace($times['.com-rname'][$bracket - 1] ?? '');
-            $response['bracket' . $bracket . 'ExhibitionTime'] = (float) ($times['.col6'][$bracket] ?? 0);
-            $response['bracket' . $bracket . 'LapTime'] = (float) ($times['.col7'][$bracket] ?? 0);
-            $response['bracket' . $bracket . 'TurnTime'] = (float) ($times['.col8'][$bracket] ?? 0);
-            $response['bracket' . $bracket . 'StraightTime'] = (float) ($times['.col9'][$bracket] ?? 0);
+            $response['bracket_' . $bracket . '_racer_name'] = $this->removeSpace($times['.com-rname'][$bracket - 1] ?? '');
+            $response['bracket_' . $bracket . '_exhibition_time'] = (float) ($times['.col6'][$bracket] ?? 0);
+            $response['bracket_' . $bracket . '_lap_time'] = (float) ($times['.col7'][$bracket] ?? 0);
+            $response['bracket_' . $bracket . '_turn_time'] = (float) ($times['.col8'][$bracket] ?? 0);
+            $response['bracket_' . $bracket . '_straight_time'] = (float) ($times['.col9'][$bracket] ?? 0);
         }
 
         return $response;
@@ -55,10 +55,10 @@ class Stadium21 extends BaseStadium implements StadiumInterface
         $comments = $this->filterByKeys($crawler, ['.com-rname', '.col10']);
 
         foreach (range(1, 6) as $bracket) {
-            $response['bracket' . $bracket . 'RacerName'] =
+            $response['bracket_' . $bracket . '_racer_name'] =
                 $this->removeSpace($comments['.com-rname'][$bracket - 1] ?? '');
-            $response['bracket' . $bracket . 'RacerComment1Label'] = '前日コメント';
-            $response['bracket' . $bracket . 'RacerComment1'] =
+            $response['bracket_' . $bracket . '_racer_comment_1_label'] = '前日コメント';
+            $response['bracket_' . $bracket . '_racer_comment_1'] =
                 $this->formatComment($comments['.col10'][$bracket] ?? '');
         }
 

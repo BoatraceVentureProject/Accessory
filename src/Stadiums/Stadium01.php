@@ -34,15 +34,15 @@ class Stadium01 extends BaseStadium implements StadiumInterface
         ]);
 
         foreach (range(1, 6) as $bracket) {
-            $response['bracket' . $bracket . 'RacerName'] =
+            $response['bracket_' . $bracket . '_racer_name'] =
                 $this->removeSpace($times['.com-rname'][$bracket - 1] ?? '');
-            $response['bracket' . $bracket . 'ExhibitionTime'] =
+            $response['bracket_' . $bracket . '_exhibition_time'] =
                 (float) ($times['.col5'][$bracket] ?? 0);
-            $response['bracket' . $bracket . 'HalfLapTime'] =
+            $response['bracket_' . $bracket . '_half_lap_time'] =
                 (float) ($times['.col6'][$bracket] ?? 0);
-            $response['bracket' . $bracket . 'TurnTime'] =
+            $response['bracket_' . $bracket . '_turn_time'] =
                 (float) ($times['.col7'][$bracket] ?? 0);
-            $response['bracket' . $bracket . 'StraightTime'] =
+            $response['bracket_' . $bracket . '_straight_time'] =
                 (float) ($times['.col8'][$bracket - 1] ?? 0);
         }
 

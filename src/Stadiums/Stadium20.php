@@ -28,10 +28,10 @@ class Stadium20 extends BaseStadium implements StadiumInterface
         $times = $this->filterByKeys($crawler, ['.names > td', '.hint']);
 
         foreach (range(1, 6) as $bracket) {
-            $response['bracket' . $bracket . 'RacerName'] = $this->removeSpace($times['.names > td'][$bracket - 1] ?? '');
-            $response['bracket' . $bracket . 'ExhibitionTime'] = (float) ($times['.hint'][$bracket - 1] ?? 0);
-            $response['bracket' . $bracket . 'LapTime'] = (float) ($times['.hint'][$bracket + 5] ?? 0);
-            $response['bracket' . $bracket . 'StraightTime'] = (float) ($times['.hint'][$bracket + 5 + 6] ?? 0);
+            $response['bracket_' . $bracket . '_racer_name'] = $this->removeSpace($times['.names > td'][$bracket - 1] ?? '');
+            $response['bracket_' . $bracket . '_exhibition_time'] = (float) ($times['.hint'][$bracket - 1] ?? 0);
+            $response['bracket_' . $bracket . '_lap_time'] = (float) ($times['.hint'][$bracket + 5] ?? 0);
+            $response['bracket_' . $bracket . '_straight_time'] = (float) ($times['.hint'][$bracket + 5 + 6] ?? 0);
         }
 
         return $response;
@@ -54,10 +54,10 @@ class Stadium20 extends BaseStadium implements StadiumInterface
         $comments = $this->filterByKeys($crawler, ['.names > td', '#comments > dl > dd']);
 
         foreach (range(1, 6) as $bracket) {
-            $response['bracket' . $bracket . 'RacerName'] =
+            $response['bracket_' . $bracket . '_racer_name'] =
                 $this->removeSpace($comments['.names > td'][$bracket - 1] ?? '');
-            $response['bracket' . $bracket . 'RacerComment1Label'] = '前日コメント';
-            $response['bracket' . $bracket . 'RacerComment1'] =
+            $response['bracket_' . $bracket . '_racer_comment_1_label'] = '前日コメント';
+            $response['bracket_' . $bracket . '_racer_comment_1'] =
                 $this->formatComment($comments['#comments > dl > dd'][$bracket - 1] ?? '');
         }
 

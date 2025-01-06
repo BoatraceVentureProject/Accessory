@@ -28,11 +28,11 @@ class Stadium08 extends BaseStadium implements StadiumInterface
         $chunkTimes = array_chunk($times['.time'], 4);
 
         foreach (range(1, 6) as $bracket) {
-            $response['bracket' . $bracket . 'RacerName'] = preg_split('/\d{4}/u', $this->removeSpace($times['.racer'][$bracket - 1] ?? ''))[0];
-            $response['bracket' . $bracket . 'ExhibitionTime'] = (float) ($chunkTimes[$bracket - 1][0] ?? 0);
-            $response['bracket' . $bracket . 'LapTime'] = (float) ($chunkTimes[$bracket - 1][1] ?? 0);
-            $response['bracket' . $bracket . 'TurnTime'] = (float) ($chunkTimes[$bracket - 1][2] ?? 0);
-            $response['bracket' . $bracket . 'StraightTime'] = (float) ($chunkTimes[$bracket - 1][3] ?? 0);
+            $response['bracket_' . $bracket . '_racer_name'] = preg_split('/\d{4}/u', $this->removeSpace($times['.racer'][$bracket - 1] ?? ''))[0];
+            $response['bracket_' . $bracket . '_exhibition_time'] = (float) ($chunkTimes[$bracket - 1][0] ?? 0);
+            $response['bracket_' . $bracket . '_lap_time'] = (float) ($chunkTimes[$bracket - 1][1] ?? 0);
+            $response['bracket_' . $bracket . '_turn_time'] = (float) ($chunkTimes[$bracket - 1][2] ?? 0);
+            $response['bracket_' . $bracket . '_straight_time'] = (float) ($chunkTimes[$bracket - 1][3] ?? 0);
         }
 
         return $response;
@@ -54,10 +54,10 @@ class Stadium08 extends BaseStadium implements StadiumInterface
         $comments = $this->filterByKeys($crawler, ['.racer', '.r_come']);
 
         foreach (range(1, 6) as $bracket) {
-            $response['bracket' . $bracket . 'RacerName'] =
+            $response['bracket_' . $bracket . '_racer_name'] =
                 $this->removeSpace(preg_split('/\d{4}/u', $comments['.racer'][$bracket - 1] ?? '')[0] ?? '');
-            $response['bracket' . $bracket . 'RacerComment1Label'] = '前日コメント';
-            $response['bracket' . $bracket . 'RacerComment1'] =
+            $response['bracket_' . $bracket . '_racer_comment_1_label'] = '前日コメント';
+            $response['bracket_' . $bracket . '_racer_comment_1'] =
                 $this->formatComment($comments['.r_come'][$bracket - 1] ?? '');
         }
 

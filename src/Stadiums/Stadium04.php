@@ -35,7 +35,7 @@ class Stadium04 extends BaseStadium implements StadiumInterface
             foreach (range(1, 2) as $absence) {
                 $xpath = sprintf($racerNameFormat, $baseXpath, $bracket, $absence);
                 if ($crawler->filterXPath($xpath)->count()) {
-                    $response['bracket' . $bracket . 'RacerName'] =
+                    $response['bracket_' . $bracket . '_racer_name'] =
                         $this->removeSpace($crawler->filterXPath($xpath)->text());
 
                     if ($absence === 2) {
@@ -49,10 +49,10 @@ class Stadium04 extends BaseStadium implements StadiumInterface
                 if ($crawler->filterXPath($xpath)->count()) {
                     $response[
                         match ($key) {
-                            3 => 'bracket' . $bracket . 'LapTime',
-                            4 => 'bracket' . $bracket . 'TurnTime',
-                            5 => 'bracket' . $bracket . 'StraightTime',
-                            6 => 'bracket' . $bracket . 'ExhibitionTime',
+                            3 => 'bracket_' . $bracket . '_lap_time',
+                            4 => 'bracket_' . $bracket . '_turn_time',
+                            5 => 'bracket_' . $bracket . '_straight_time',
+                            6 => 'bracket_' . $bracket . '_exhibition_time',
                         }
                     ] = (float) $crawler->filterXPath($xpath)->text();
                 }
@@ -63,9 +63,9 @@ class Stadium04 extends BaseStadium implements StadiumInterface
                 if ($crawler->filterXPath($xpath)->count()) {
                     $response[
                         match ($key) {
-                            1 => 'bracket' . $bracket . 'LapTimeSpeed',
-                            2 => 'bracket' . $bracket . 'TurnTimeSpeed',
-                            3 => 'bracket' . $bracket . 'StraightTimeSpeed',
+                            1 => 'bracket_' . $bracket . '_lap_time_speed',
+                            2 => 'bracket_' . $bracket . '_turn_time_speed',
+                            3 => 'bracket_' . $bracket . '_straight_time_speed',
                         }
                     ] = (float) $crawler->filterXPath($xpath)->text();
                 }

@@ -31,17 +31,17 @@ class Stadium17 extends BaseStadium implements StadiumInterface
 
         foreach (range(1, 6) as $bracket) {
             $xpath = sprintf($racerNameFormat, $baseXpath, $bracket * 2 + 1);
-            $response['bracket' . $bracket . 'RacerName'] =
+            $response['bracket_' . $bracket . '_racer_name'] =
                 $this->removeSpace($crawler->filterXPath($xpath)->text());
 
             foreach (range(5, 8) as $key) {
                 $xpath = sprintf($timeFormat, $baseXpath, $bracket * 2 + 1, $key);
                 $response[
                     match ($key) {
-                        5 => 'bracket' . $bracket . 'ExhibitionTime',
-                        6 => 'bracket' . $bracket . 'LapTime',
-                        7 => 'bracket' . $bracket . 'TurnTime',
-                        8 => 'bracket' . $bracket . 'StraightTime',
+                        5 => 'bracket_' . $bracket . '_exhibition_time',
+                        6 => 'bracket_' . $bracket . '_lap_time',
+                        7 => 'bracket_' . $bracket . '_turn_time',
+                        8 => 'bracket_' . $bracket . '_straight_time',
                     }
                 ] = (float) $crawler->filterXPath($xpath)->text();
             }
@@ -67,7 +67,7 @@ class Stadium17 extends BaseStadium implements StadiumInterface
         $baseXpath = 'descendant-or-self::body/div[6]/div[1]/table/tbody';
 
         foreach (range(1, 6) as $bracket) {
-            $response['bracket' . $bracket . 'RacerName'] =
+            $response['bracket_' . $bracket . '_racer_name'] =
                 $this->removeSpace($crawler->filterXPath(
                     sprintf('%s/tr[%d]/td[2]/p[1]/a', $baseXpath, $bracket + 1)
                 )->text());
@@ -81,11 +81,11 @@ class Stadium17 extends BaseStadium implements StadiumInterface
             )->text());
 
             if ($comment1 === $comment2) {
-                $response['bracket' . $bracket . 'RacerComment1Label'] = '前日コメント';
-                $response['bracket' . $bracket . 'RacerComment1'] = $comment1;
+                $response['bracket_' . $bracket . '_racer_comment_1_label'] = '前日コメント';
+                $response['bracket_' . $bracket . '_racer_comment_1'] = $comment1;
             } else {
-                $response['bracket' . $bracket . 'RacerComment2Label'] = '当日コメント';
-                $response['bracket' . $bracket . 'RacerComment2'] = $comment2;
+                $response['bracket_' . $bracket . '_racer_comment_2_label'] = '当日コメント';
+                $response['bracket_' . $bracket . '_racer_comment_2'] = $comment2;
             }
         }
 
