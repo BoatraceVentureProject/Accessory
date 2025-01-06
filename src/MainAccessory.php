@@ -17,9 +17,9 @@ class MainAccessory
      */
     public function times(int $stadiumId, int $raceNumber, ?string $date = null): array
     {
-        $name = sprintf('Stadium%02d', $stadiumId);
-        $arguments = [$raceNumber, $date];
-        return Accessory::getInstance($name)->times(...$arguments);
+        return Accessory::getInstance(
+            sprintf('Stadium%02d', $stadiumId)
+        )->times($raceNumber, $date);
     }
 
     /**
