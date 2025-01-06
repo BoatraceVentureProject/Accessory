@@ -31,8 +31,7 @@ class MainAccessory
     public function comments(int $stadiumId, int $raceNumber, ?string $date = null): array
     {
         $name = sprintf('Stadium%02d', $stadiumId);
-        $callback = [Accessory::getInstance($name), 'comments'];
         $arguments = [$raceNumber, $date];
-        return call_user_func_array($callback, $arguments);
+        return Accessory::getInstance($name)->comments(...$arguments);
     }
 }
