@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Boatrace\Sakura\Tests\Stadiums;
+namespace Boatrace\Venture\Project\Tests\Stadiums;
 
-use Boatrace\Sakura\Stadiums\Stadium23;
+use Boatrace\Venture\Project\Stadiums\Stadium23;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Symfony\Component\BrowserKit\HttpBrowser;
 
@@ -14,7 +14,7 @@ use Symfony\Component\BrowserKit\HttpBrowser;
 class Stadium23Test extends PHPUnitTestCase
 {
     /**
-     * @var \Boatrace\Sakura\Stadiums\Stadium23
+     * @var \Boatrace\Venture\Project\Stadiums\Stadium23
      */
     protected Stadium23 $stadium;
 

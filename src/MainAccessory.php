@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Boatrace\Sakura;
+namespace Boatrace\Venture\Project;
 
 /**
  * @author shimomo

@@ -1,6 +1,6 @@
 {
-    "name": "boatrace-sakura/accessory",
-    "description": "The Boatrace Sakura Accessory.",
+    "name": "bvp/accessory",
+    "description": "Accessory in the Boatrace Venture Project.",
     "license": "MIT",
     "type": "library",
     "authors": [
@@ -24,12 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Boatrace\\Sakura\\": "src/"
+            "Boatrace\\Venture\\Project\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Boatrace\\Sakura\\Tests\\": "tests/"
+            "Boatrace\\Venture\\Project\\Tests\\": "tests/"
         }
     }
 }

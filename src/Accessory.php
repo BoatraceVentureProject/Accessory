@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Boatrace\Sakura;
+namespace Boatrace\Venture\Project;
 
-use Boatrace\Sakura\Stadiums\BaseStadium;
+use Boatrace\Venture\Project\Stadiums\BaseStadium;
 use DI\Container;
 use DI\ContainerBuilder;
 
@@ -24,7 +24,7 @@ class Accessory
     protected static Container $container;
 
     /**
-     * @param \Boatrace\Sakura\MainAccessory  $accessory
+     * @param \Boatrace\Venture\Project\MainAccessory  $accessory
      */
     public function __construct(protected MainAccessory $accessory){}
 
@@ -50,7 +50,7 @@ class Accessory
 
     /**
      * @param  string  $name
-     * @return \Boatrace\Sakura\Accessory|\Boatrace\Sakura\Stadiums\BaseStadium
+     * @return \Boatrace\Venture\Project\Accessory|\Boatrace\Venture\Project\Stadiums\BaseStadium
      */
     public static function getInstance(string $name): Accessory|BaseStadium
     {

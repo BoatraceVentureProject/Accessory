@@ -5,7 +5,7 @@
          stopOnFailure="false">
 
     <testsuites>
-        <testsuite name="boatrace-sakura">
+        <testsuite name="Boatrace Venture Project">
             <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>

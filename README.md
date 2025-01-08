@@ -1,14 +1,14 @@
-# Boatrace Sakura Accessory
+# Accessory in the Boatrace Venture Project
 
-[![Build Status](https://github.com/boatrace-sakura/accessory/workflows/tests/badge.svg)](https://github.com/boatrace-sakura/accessory/actions?query=workflow%3Atests)
-[![Coverage Status](https://coveralls.io/repos/github/boatrace-sakura/accessory/badge.svg?branch=main)](https://coveralls.io/github/boatrace-sakura/accessory?branch=main)
-[![Latest Stable Version](https://poser.pugx.org/boatrace-sakura/accessory/v/stable)](https://packagist.org/packages/boatrace-sakura/accessory)
-[![Latest Unstable Version](https://poser.pugx.org/boatrace-sakura/accessory/v/unstable)](https://packagist.org/packages/boatrace-sakura/accessory)
-[![License](https://poser.pugx.org/boatrace-sakura/accessory/license)](https://packagist.org/packages/boatrace-sakura/accessory)
+[![Build Status](https://github.com/BoatraceVentureProject/Accessory/workflows/tests/badge.svg)](https://github.com/BoatraceVentureProject/Accessory/actions?query=workflow%3Atests)
+[![Coverage Status](https://coveralls.io/repos/github/BoatraceVentureProject/Accessory/badge.svg?branch=main)](https://coveralls.io/github/BoatraceVentureProject/Accessory?branch=main)
+[![Latest Stable Version](https://poser.pugx.org/bvp/accessory/v/stable)](https://packagist.org/packages/bvp/accessory)
+[![Latest Unstable Version](https://poser.pugx.org/bvp/accessory/v/unstable)](https://packagist.org/packages/bvp/accessory)
+[![License](https://poser.pugx.org/bvp/accessory/license)](https://packagist.org/packages/bvp/accessory)
 
 ## Installation
 ```bash
-composer require boatrace-sakura/accessory
+composer require bvp/accessory
 ```
 
 ## Usage
@@ -17,7 +17,7 @@ composer require boatrace-sakura/accessory
 
 require __DIR__ . '/vendor/autoload.php';
 
-use Boatrace\Sakura\Accessory;
+use Boatrace\Venture\Project\Accessory;
 
 var_dump(Accessory::times(stadiumId: 24, raceNumber: 1));
 var_dump(Accessory::times(stadiumId: 24, raceNumber: 1, date: '2024-01-01'));
@@ -27,4 +27,4 @@ var_dump(Accessory::comments(stadiumId: 24, raceNumber: 1, date: '2024-01-01'));
 ```
 
 ## License
-The Boatrace Sakura Accessory is open source software licensed under the [MIT license](LICENSE).
+Accessory in the Boatrace Venture Project is open source software licensed under the [MIT license](LICENSE).

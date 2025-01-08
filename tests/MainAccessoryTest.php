@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Boatrace\Sakura\Tests;
+namespace Boatrace\Venture\Project\Tests;
 
-use Boatrace\Sakura\MainAccessory;
+use Boatrace\Venture\Project\MainAccessory;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Symfony\Component\BrowserKit\HttpBrowser;
 
@@ -14,7 +14,7 @@ use Symfony\Component\BrowserKit\HttpBrowser;
 class MainAccessoryTest extends PHPUnitTestCase
 {
     /**
-     * @var \Boatrace\Sakura\MainAccessory
+     * @var \Boatrace\Venture\Project\MainAccessory
      */
     protected MainAccessory $accessory;
 

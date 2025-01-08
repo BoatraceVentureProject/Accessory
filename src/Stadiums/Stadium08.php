@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Boatrace\Sakura\Stadiums;
+namespace Boatrace\Venture\Project\Stadiums;
 
 use Carbon\CarbonImmutable as Carbon;
 
