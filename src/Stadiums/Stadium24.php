@@ -79,11 +79,11 @@ class Stadium24 extends BaseStadium implements StadiumInterface
 
             $response['bracket_' . $bracket . '_racer_name'] = $this->removeSpace($comments['.tei' . $bracket][1] ?? '');
             $response['bracket_' . $bracket . '_racer_comment_1_label'] = '前日コメント';
-            $response['bracket_' . $bracket . '_racer_comment_1'] = $this->formatComment($matches[1]);
+            $response['bracket_' . $bracket . '_racer_comment_1'] = $this->normalize($matches[1]);
 
             if (count($matches) >= 3) {
                 $response['bracket_' . $bracket . '_racer_comment_2_label'] = '当日コメント';
-                $response['bracket_' . $bracket . '_racer_comment_2'] = $this->formatComment($matches[2]);
+                $response['bracket_' . $bracket . '_racer_comment_2'] = $this->normalize($matches[2]);
             }
         }
 

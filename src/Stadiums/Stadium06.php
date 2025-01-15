@@ -63,9 +63,9 @@ class Stadium06 extends BaseStadium implements StadiumInterface
         foreach (range(1, 6) as $bracket) {
             $response['bracket_' . $bracket . '_racer_name'] = $this->removeNonJapanese($comments[$bracket * 5 - 5] ?? '');
             $response['bracket_' . $bracket . '_racer_comment_1_label'] = '前日コメント';
-            $response['bracket_' . $bracket . '_racer_comment_1'] = $this->formatComment($comments[$bracket * 5 - 3] ?? '');
-            $response['bracket_' . $bracket . '_racer_comment_2_label'] = $this->formatComment($comments[$bracket * 5 - 2] ?? '');
-            $response['bracket_' . $bracket . '_racer_comment_2'] = $this->formatComment($comments[$bracket * 5 - 1] ?? '');
+            $response['bracket_' . $bracket . '_racer_comment_1'] = $this->normalize($comments[$bracket * 5 - 3] ?? '');
+            $response['bracket_' . $bracket . '_racer_comment_2_label'] = $this->normalize($comments[$bracket * 5 - 2] ?? '');
+            $response['bracket_' . $bracket . '_racer_comment_2'] = $this->normalize($comments[$bracket * 5 - 1] ?? '');
         }
 
         return $response;

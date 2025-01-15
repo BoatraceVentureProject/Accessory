@@ -92,13 +92,13 @@ class Stadium15 extends BaseStadium implements StadiumInterface
 
                 $response['bracket_' . $bracket . '_racer_comment_1_label'] = '前日コメント';
                 $response['bracket_' . $bracket . '_racer_comment_1'] =
-                    preg_replace('/\A前日/u', '', $this->formatComment($crawler->filterXPath(
+                    preg_replace('/\A前日/u', '', $this->normalize($crawler->filterXPath(
                         sprintf($racerComment1Format, $baseXpath, $bracket)
                     )->text()));
 
                 $response['bracket_' . $bracket . '_racer_comment_2_label'] = '当日コメント';
                 $response['bracket_' . $bracket . '_racer_comment_2'] =
-                    preg_replace('/\A当日/u', '', $this->formatComment($crawler->filterXPath(
+                    preg_replace('/\A当日/u', '', $this->normalize($crawler->filterXPath(
                         sprintf($racerComment2Format, $baseXpath, $bracket)
                     )->text()));
             } catch (InvalidArgumentException $exception) {

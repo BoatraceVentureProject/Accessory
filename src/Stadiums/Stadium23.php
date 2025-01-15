@@ -77,7 +77,7 @@ class Stadium23 extends BaseStadium implements StadiumInterface
                             1 => '前日コメント',
                             2 => '当日コメント',
                         };
-                        $response['bracket_' . $bracket . '_racer_comment_' . $key] = $this->formatComment(
+                        $response['bracket_' . $bracket . '_racer_comment_' . $key] = $this->normalize(
                             $crawler->filterXPath($xpath)->text()
                         );
                     }

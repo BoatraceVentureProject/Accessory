@@ -80,10 +80,10 @@ class Stadium17 extends BaseStadium implements StadiumInterface
                 );
 
                 $xpath1 = sprintf('%s/tr[%d]/td[4]/p/text()', $baseXpath, $bracket + 1);
-                $comment1 = $this->formatComment($crawler->filterXPath($xpath1)->text());
+                $comment1 = $this->normalize($crawler->filterXPath($xpath1)->text());
 
                 $xpath2 = sprintf('%s/tr[%d]/td[4]/p', $baseXpath, $bracket + 1);
-                $comment2 = $this->formatComment($crawler->filterXPath($xpath2)->text());
+                $comment2 = $this->normalize($crawler->filterXPath($xpath2)->text());
 
                 if ($comment1 === $comment2) {
                     $response['bracket_' . $bracket . '_racer_comment_1_label'] = '前日コメント';
