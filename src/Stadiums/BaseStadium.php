@@ -96,4 +96,13 @@ abstract class BaseStadium
     {
         return mb_convert_kana($this->removeSpace($value), 'KVa');
     }
+
+    /**
+     * @param  array  $array
+     * @return array
+     */
+    protected function normalizeArray(array $array): array
+    {
+        return array_map([$this, 'normalize'], $array);
+    }
 }
