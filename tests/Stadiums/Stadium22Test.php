@@ -31,7 +31,7 @@ class Stadium22Test extends PHPUnitTestCase
     /**
      * @return void
      */
-    public function testTimes01(): void
+    public function testTimesForRaceNumber1AndDate20240103(): void
     {
         $response = $this->stadium->times(raceNumber: 1, date: '2024-01-03');
         $this->assertSame('益田啓司', $response['bracket_1_racer_name']);
