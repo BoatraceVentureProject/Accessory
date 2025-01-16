@@ -155,4 +155,36 @@ class Stadium10Test extends PHPUnitTestCase
         $this->assertSame('前日コメント', $response['bracket_6_racer_comment_1_label']);
         $this->assertSame('ペラが合ってない感じ。色々やる', $response['bracket_6_racer_comment_1']);
     }
+
+    /**
+     * @return void
+     */
+    public function testForecastsForRaceNumber1AndDate20240118(): void
+    {
+        $response = $this->stadium->forecasts(raceNumber: 1, date: '2024-01-18');
+        $this->assertSame('記者予想 前日フォーカス', $response['reporter_yesterday_focus_label']);
+        $this->assertSame(['1=2-4', '1=2-3', '1=4-2', '1=4-3', '1=3-2'], $response['reporter_yesterday_focus']);
+        $this->assertSame('JLC予想 前日フォーカス', $response['jlc_yesterday_focus_label']);
+        $this->assertSame(['1-4-5', '1-5-4', '1-4-2', '1-5-2', '1-2-4'], $response['jlc_yesterday_focus']);
+        $this->assertSame('記者予想 当日コメント', $response['reporter_today_comment_label']);
+        $this->assertSame('1R初戦からチャンスの①大上がこれをしっかりものにする。②齋藤は素早くハンドル切って追従。④竹田も冷静に展開見ながら回る。', $response['reporter_today_comment']);
+        $this->assertSame('記者予想 当日フォーカス', $response['reporter_today_focus_label']);
+        $this->assertSame(['1-2-流し', '1-4-流し'], $response['reporter_today_focus']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testForecastsForRaceNumber6AndDate20240118(): void
+    {
+        $response = $this->stadium->forecasts(raceNumber: 6, date: '2024-01-18');
+        $this->assertSame('記者予想 前日フォーカス', $response['reporter_yesterday_focus_label']);
+        $this->assertSame(['6=3-1', '6=3-2', '6=1-3', '6=1-2', '6=2-3'], $response['reporter_yesterday_focus']);
+        $this->assertSame('JLC予想 前日フォーカス', $response['jlc_yesterday_focus_label']);
+        $this->assertSame(['6-3-1', '6-3-4', '3-6-1', '3-6-4', '6-1-3'], $response['jlc_yesterday_focus']);
+        $this->assertSame('記者予想 当日コメント', $response['reporter_today_comment_label']);
+        $this->assertSame('6R大外枠の⑥徳増だが、コース取りも視野に巧みに捌いて外枠克服。③古田は全速ターンで迫る。①松山もインをキープして連に絡む。', $response['reporter_today_comment']);
+        $this->assertSame('記者予想 当日フォーカス', $response['reporter_today_focus_label']);
+        $this->assertSame(['6=3-124', '6=1-234'], $response['reporter_today_focus']);
+    }
 }
