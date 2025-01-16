@@ -133,7 +133,7 @@ class Stadium22Test extends PHPUnitTestCase
     /**
      * @return void
      */
-    public function testComments02(): void
+    public function testCommentsForRaceNumber7AndDate20240103(): void
     {
         $response = $this->stadium->comments(raceNumber: 7, date: '2024-01-03');
         $this->assertSame('梶原正', $response['bracket_1_racer_name']);
