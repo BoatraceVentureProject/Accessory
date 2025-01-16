@@ -56,6 +56,22 @@ abstract class BaseStadium
 
     /**
      * @param  \Symfony\Component\DomCrawler\Crawler  $crawler
+     * @param  array                                  $prefixes
+     * @return array
+     */
+    protected function filterByIdPrefixes(Crawler $crawler, array $prefixes): array
+    {
+        $response = [];
+
+        foreach ($prefixes as $prefix) {
+            $response[$prefix] = $this->filterByIdPrefix($crawler, $prefix);
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param  \Symfony\Component\DomCrawler\Crawler  $crawler
      * @param  string                                 $prefix
      * @return array
      */
