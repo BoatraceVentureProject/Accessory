@@ -116,4 +116,63 @@ class Stadium22 extends BaseStadium implements StadiumInterface
             'reporter_yesterday_reliability' => $reporterYesterdayReliability,
         ];
     }
+
+    /**
+     * @param  int     $raceNumber
+     * @param  string  $date
+     * @return array
+     */
+    protected function fetchTodayForecasts(int $raceNumber, string $date): array
+    {
+        $baseUrl = 'https://www.boatrace-fukuoka.com';
+        $crawlerFormat = '%s/modules/yosou/cyokuzen.php?day=%s&race=%d&if=1&nowmode=1';
+        $crawlerUrl = sprintf($crawlerFormat, $baseUrl, $date, $raceNumber);
+        $crawler = $this->httpBrowser->request('GET', $crawlerUrl);
+        $forecasts = $this->filterByKeys($crawler, [
+            '.cComment__title',
+            '.cComment__come',
+        ]);
+
+        foreach ($forecasts as $key => $value) {
+            if (empty($value)) {
+                throw new \Boatrace\Venture\Project\Exceptions\AccessoryNotFoundException(
+                    'No data found for key \'' . $key . '\' at \'' . $crawlerUrl . '\'.'
+                );
+            }
+        }
+
+        $focus = [];
+        $focusIndex = 0;
+        $crawler->filter('.cComment__num')->each(function ($node) use (&$focus, &$focusIndex) {
+            $node->filter('img, span')->each(function ($node) use (&$focus, &$focusIndex) {
+                $focus[$focusIndex] ??= '';
+                $focus[$focusIndex] .= $node->nodeName() === 'img' ? '-' : $node->text();
+
+                if (trim($node->getNode(0)?->nextSibling?->textContent ?? '') === "\u{3000}") {
+                    $focusIndex++;
+                }
+            });
+
+            $focusIndex++;
+        });
+
+        if (empty($focus)) {
+            throw new AccessoryNotFoundException(
+                'No data found for key \'.cComment__num > img, .cComment__num > span\' at \'' . $crawlerUrl . '\'.'
+            );
+        }
+
+        $reporterTodayCommentLabel = '記者予想 当日コメント';
+        $reporterTodayFocusLabel = '記者予想 当日フォーカス';
+
+        $reporterTodayComment = $this->normalize(implode('', array_map('implode', $forecasts)));
+        $reporterTodayFocus = $this->normalizeArray(array_values($focus));
+
+        return [
+            'reporter_today_comment_label' => $reporterTodayCommentLabel,
+            'reporter_today_comment' => $reporterTodayComment,
+            'reporter_today_focus_label' => $reporterTodayFocusLabel,
+            'reporter_today_focus' => $reporterTodayFocus,
+        ];
+    }
 }
