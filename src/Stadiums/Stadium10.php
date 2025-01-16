@@ -111,4 +111,44 @@ class Stadium10 extends BaseStadium implements StadiumInterface
             'jlc_yesterday_reliability' => $jlcYesterdayReliability,
         ];
     }
+
+    /**
+     * @param  int     $raceNumber
+     * @param  string  $date
+     * @return array
+     */
+    protected function fetchTodayForecasts(int $raceNumber, string $date): array
+    {
+        $baseUrl = 'https://www.boatrace-mikuni.jp';
+        $crawlerFormat = '%s/modules/yosou/group-cyokuzen.php?day=%s&race=%d';
+        $crawlerUrl = sprintf($crawlerFormat, $baseUrl, $date, $raceNumber);
+        $crawler = $this->httpBrowser->request('GET', $crawlerUrl);
+        $forecasts = $this->filterByKeys($crawler, [
+            '.cyosou_cmt',
+            '.cyosou_focus',
+        ]);
+
+        foreach ($forecasts as $key => $value) {
+            if (empty($value)) {
+                throw new \Boatrace\Venture\Project\Exceptions\AccessoryNotFoundException(
+                    'No data found for key \'' . $key . '\' at \'' . $crawlerUrl . '\'.'
+                );
+            }
+        }
+
+        $reporterTodayCommentLabel = '記者予想 当日コメント';
+        $reporterTodayFocusLabel = '記者予想 当日フォーカス';
+
+        $reporterTodayComment = $this->normalize($forecasts['.cyosou_cmt'][0]);
+        $reporterTodayFocus = array_values(array_filter($this->normalizeArray(
+            preg_split('/\s+/u', str_replace('＜フォーカス＞', '', $forecasts['.cyosou_focus'][0]))
+        )));
+
+        return [
+            'reporter_today_comment_label' => $reporterTodayCommentLabel,
+            'reporter_today_comment' => $reporterTodayComment,
+            'reporter_today_focus_label' => $reporterTodayFocusLabel,
+            'reporter_today_focus' => $reporterTodayFocus,
+        ];
+    }
 }
