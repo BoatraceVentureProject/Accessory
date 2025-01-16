@@ -48,6 +48,17 @@ abstract class BaseStadium
      * @param  string                                 $prefix
      * @return array
      */
+    protected function filterByIdPrefix(Crawler $crawler, string $prefix): array
+    {
+        return $crawler->filterXPath('//*[starts-with(@id, \'' . ltrim($prefix, '#') . '\')]')
+            ->each(fn($node) => $node->text());
+    }
+
+    /**
+     * @param  \Symfony\Component\DomCrawler\Crawler  $crawler
+     * @param  string                                 $prefix
+     * @return array
+     */
     protected function filterByClassPrefix(Crawler $crawler, string $prefix): array
     {
         return $crawler->filterXPath('//*[starts-with(@class, \'' . ltrim($prefix, '.') . '\')]')
