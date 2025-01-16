@@ -155,4 +155,40 @@ class Stadium22Test extends PHPUnitTestCase
         $this->assertSame('前日コメント', $response['bracket_6_racer_comment_1_label']);
         $this->assertSame('新ペラに換わったので何とも言えない。', $response['bracket_6_racer_comment_1']);
     }
+
+    /**
+     * @return void
+     */
+    public function testForecastsForRaceNumber1AndDate20240103(): void
+    {
+        $response = $this->stadium->forecasts(raceNumber: 1, date: '2024-01-03');
+        $this->assertSame('記者予想 前日コース', $response['reporter_yesterday_course_label']);
+        $this->assertSame('123/456', $response['reporter_yesterday_course']);
+        $this->assertSame('記者予想 前日コメント', $response['reporter_yesterday_comment_label']);
+        $this->assertSame('新年一発目は益田が1号艇で登場。スタートに集中して白星発進へ。伸び足良好な藤森を相手に指名。篠原は早めに引いての差し。', $response['reporter_yesterday_comment']);
+        $this->assertSame('記者予想 前日信頼度', $response['reporter_yesterday_reliability_label']);
+        $this->assertSame('60%', $response['reporter_yesterday_reliability']);
+        $this->assertSame('記者予想 当日コメント', $response['reporter_today_comment_label']);
+        $this->assertSame('スリットの行き足は悪くなかった益田の逃げ切りが中心。藤森はターン後の押しが良く、スタート練習では伸びる感じもあった。', $response['reporter_today_comment']);
+        $this->assertSame('記者予想 当日フォーカス', $response['reporter_today_focus_label']);
+        $this->assertSame(['1-2-34', '1-3-24', '3-1-46', '3-4-16'], $response['reporter_today_focus']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testForecastsForRaceNumber7AndDate20240103(): void
+    {
+        $response = $this->stadium->forecasts(raceNumber: 7, date: '2024-01-03');
+        $this->assertSame('記者予想 前日コース', $response['reporter_yesterday_course_label']);
+        $this->assertSame('162/345', $response['reporter_yesterday_course']);
+        $this->assertSame('記者予想 前日コメント', $response['reporter_yesterday_comment_label']);
+        $this->assertSame('梶原はイン1着率が29%しかなく、石川の前付けもネックになる。伸び足に手応えの松本がカドから仕掛ければ、原田が鋭く切り込んで突破しそう。', $response['reporter_yesterday_comment']);
+        $this->assertSame('記者予想 前日信頼度', $response['reporter_yesterday_reliability_label']);
+        $this->assertSame('50%', $response['reporter_yesterday_reliability']);
+        $this->assertSame('記者予想 当日コメント', $response['reporter_today_comment_label']);
+        $this->assertSame('安東は深い起こしの梶原と石川に比べていき足が強めの印象。石川も新ペラの調整が進んで悪くない動き。梶原はピリッとしない。', $response['reporter_today_comment']);
+        $this->assertSame('記者予想 当日フォーカス', $response['reporter_today_focus_label']);
+        $this->assertSame(['2-4-36', '2-6-34'], $response['reporter_today_focus']);
+    }
 }
