@@ -68,4 +68,52 @@ class Stadium22 extends BaseStadium implements StadiumInterface
 
         return $response;
     }
+
+    /**
+     * @param  int     $raceNumber
+     * @param  string  $date
+     * @return array
+     */
+    protected function fetchYesterdayForecasts(int $raceNumber, string $date): array
+    {
+        $baseUrl = 'https://www.boatrace-fukuoka.com';
+        $crawlerFormat = '%s/modules/yosou/syussou.php?day=%s&race=%d&if=1&nowmode=1';
+        $crawlerUrl = sprintf($crawlerFormat, $baseUrl, $date, $raceNumber);
+        $crawler = $this->httpBrowser->request('GET', $crawlerUrl);
+        $forecasts = $this->filterByKeys($crawler, [
+            '.sinnyu',
+            '.yComment > tr:nth-child(2) > td',
+            '.jishindo > tr:nth-child(2) > td',
+        ]);
+
+        foreach ($forecasts as $key => $value) {
+            if (empty($value)) {
+                throw new \Boatrace\Venture\Project\Exceptions\AccessoryNotFoundException(
+                    'No data found for key \'' . $key . '\' at \'' . $crawlerUrl . '\'.'
+                );
+            }
+        }
+
+        $courses = explode(' ', $forecasts['.sinnyu'][0]);
+        if (($position = strrpos($courses[2], 'S')) !== false) {
+            $courses[1] = substr_replace($courses[1], '/', $position + 1, 0);
+        }
+
+        $reporterYesterdayCourseLabel = '記者予想 前日コース';
+        $reporterYesterdayCommentLabel = '記者予想 前日コメント';
+        $reporterYesterdayReliabilityLabel = '記者予想 前日信頼度';
+
+        $reporterYesterdayCourse = $this->normalize($courses[1]);
+        $reporterYesterdayComment = $this->normalize($forecasts['.yComment > tr:nth-child(2) > td'][0]);
+        $reporterYesterdayReliability = $this->normalize($forecasts['.jishindo > tr:nth-child(2) > td'][0]);
+
+        return [
+            'reporter_yesterday_course_label' => $reporterYesterdayCourseLabel,
+            'reporter_yesterday_course' => $reporterYesterdayCourse,
+            'reporter_yesterday_comment_label' => $reporterYesterdayCommentLabel,
+            'reporter_yesterday_comment' => $reporterYesterdayComment,
+            'reporter_yesterday_reliability_label' => $reporterYesterdayReliabilityLabel,
+            'reporter_yesterday_reliability' => $reporterYesterdayReliability,
+        ];
+    }
 }
