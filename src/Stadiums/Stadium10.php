@@ -68,4 +68,47 @@ class Stadium10 extends BaseStadium implements StadiumInterface
 
         return $response;
     }
+
+    /**
+     * @param  int     $raceNumber
+     * @param  string  $date
+     * @return array
+     */
+    protected function fetchYesterdayForecasts(int $raceNumber, string $date): array
+    {
+        $baseUrl = 'https://www.boatrace-mikuni.jp';
+        $crawlerFormat = '%s/modules/yosou/group-syussou.php?day=%s&race=%d';
+        $crawlerUrl = sprintf($crawlerFormat, $baseUrl, $date, $raceNumber);
+        $crawler = $this->httpBrowser->request('GET', $crawlerUrl);
+        $forecasts = $this->filterByKeys($crawler, [
+            '.z_focus > .focus_list > li',
+            '.j_focus > .focus_list > li',
+            '.j_reliability',
+        ]);
+
+        foreach ($forecasts as $key => $value) {
+            if (empty($value)) {
+                throw new \Boatrace\Venture\Project\Exceptions\AccessoryNotFoundException(
+                    'No data found for key \'' . $key . '\' at \'' . $crawlerUrl . '\'.'
+                );
+            }
+        }
+
+        $reporterYesterdayFocusLabel = '記者予想 前日フォーカス';
+        $jlcYesterdayFocusLabel = 'JLC予想 前日フォーカス';
+        $jlcYesterdayReliabilityLabel = 'JLC予想 前日信頼度';
+
+        $reporterYesterdayFocus = $this->normalizeArray($forecasts['.z_focus > .focus_list > li']);
+        $jlcYesterdayFocus = $this->normalizeArray($forecasts['.j_focus > .focus_list > li']);
+        $jlcYesterdayReliability = $this->normalize($forecasts['.j_reliability'][0]);
+
+        return [
+            'reporter_yesterday_focus_label' => $reporterYesterdayFocusLabel,
+            'reporter_yesterday_focus' => $reporterYesterdayFocus,
+            'jlc_yesterday_focus_label' => $jlcYesterdayFocusLabel,
+            'jlc_yesterday_focus' => $jlcYesterdayFocus,
+            'jlc_yesterday_reliability_label' => $jlcYesterdayReliabilityLabel,
+            'jlc_yesterday_reliability' => $jlcYesterdayReliability,
+        ];
+    }
 }
