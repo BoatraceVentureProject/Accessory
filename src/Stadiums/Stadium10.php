@@ -70,6 +70,21 @@ class Stadium10 extends BaseStadium implements StadiumInterface
     }
 
     /**
+     * @param  int          $raceNumber
+     * @param  string|null  $date
+     * @return array
+     */
+    public function forecasts(int $raceNumber, ?string $date = null): array
+    {
+        $date = Carbon::parse($date ?? 'today')->format('Ymd');
+
+        return array_merge(...[
+            $this->fetchYesterdayForecasts($raceNumber, $date),
+            $this->fetchTodayForecasts($raceNumber, $date),
+        ]);
+    }
+
+    /**
      * @param  int     $raceNumber
      * @param  string  $date
      * @return array
