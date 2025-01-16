@@ -35,7 +35,6 @@ abstract class BaseStadium
     protected function filterByKeys(Crawler $crawler, array $keys): array
     {
         $response = [];
-
         foreach ($keys as $key) {
             $response[$key] = $this->filterByKey($crawler, $key);
         }
@@ -62,7 +61,6 @@ abstract class BaseStadium
     protected function filterByIdPrefixes(Crawler $crawler, array $prefixes): array
     {
         $response = [];
-
         foreach ($prefixes as $prefix) {
             $response[$prefix] = $this->filterByIdPrefix($crawler, $prefix);
         }
@@ -89,7 +87,6 @@ abstract class BaseStadium
     protected function filterByClassPrefixes(Crawler $crawler, array $prefixes): array
     {
         $response = [];
-
         foreach ($prefixes as $prefix) {
             $response[$prefix] = $this->filterByClassPrefix($crawler, $prefix);
         }
