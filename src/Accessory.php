@@ -25,9 +25,9 @@ class Accessory
     protected static Container $container;
 
     /**
-     * @param \Boatrace\Venture\Project\MainAccessory  $accessory
+     * @param \Boatrace\Venture\Project\AccessoryCore  $accessory
      */
-    public function __construct(protected MainAccessory $accessory){}
+    public function __construct(private readonly AccessoryCore $accessory) {}
 
     /**
      * @param  string  $name

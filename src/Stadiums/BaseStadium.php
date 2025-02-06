@@ -13,9 +13,10 @@ use Symfony\Component\DomCrawler\Crawler;
 abstract class BaseStadium
 {
     /**
-     * @param \Symfony\Component\BrowserKit\HttpBrowser  $httpBrowser
+     * @param  \Symfony\Component\BrowserKit\HttpBrowser  $httpBrowser
+     * @return void
      */
-    public function __construct(protected HttpBrowser $httpBrowser){}
+    public function __construct(protected readonly HttpBrowser $httpBrowser) {}
 
     /**
      * @param  \Symfony\Component\DomCrawler\Crawler  $crawler

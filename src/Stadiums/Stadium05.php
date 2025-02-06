@@ -34,12 +34,12 @@ class Stadium05 extends BaseStadium implements StadiumInterface
             '.col9',
         ]);
 
-        foreach (range(1, 6) as $bracket) {
-            $response['bracket_' . $bracket . '_racer_name'] = $this->removeSpace($times['.com-rname'][$bracket - 1] ?? '');
-            $response['bracket_' . $bracket . '_exhibition_time'] = (float) ($times['.col6'][$bracket] ?? 0);
-            $response['bracket_' . $bracket . '_lap_time'] = (float) ($times['.col7'][$bracket] ?? 0);
-            $response['bracket_' . $bracket . '_turn_time'] = (float) ($times['.col8'][$bracket] ?? 0);
-            $response['bracket_' . $bracket . '_straight_time'] = (float) ($times['.col9'][$bracket] ?? 0);
+        foreach (range(1, 6) as $boat_number) {
+            $response['boat_number_' . $boat_number . '_racer_name'] = $this->removeSpace($times['.com-rname'][$boat_number - 1] ?? '');
+            $response['boat_number_' . $boat_number . '_exhibition_time'] = (float) ($times['.col6'][$boat_number] ?? 0);
+            $response['boat_number_' . $boat_number . '_lap_time'] = (float) ($times['.col7'][$boat_number] ?? 0);
+            $response['boat_number_' . $boat_number . '_turn_time'] = (float) ($times['.col8'][$boat_number] ?? 0);
+            $response['boat_number_' . $boat_number . '_straight_time'] = (float) ($times['.col9'][$boat_number] ?? 0);
         }
 
         return $response;

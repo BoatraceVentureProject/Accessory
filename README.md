@@ -1,4 +1,4 @@
-# Accessory in the Boatrace Venture Project
+# Accessory
 
 [![Build Status](https://github.com/BoatraceVentureProject/Accessory/workflows/Tests/badge.svg)](https://github.com/BoatraceVentureProject/Accessory/actions?query=workflow%3Atests)
 [![codecov](https://codecov.io/gh/BoatraceVentureProject/Accessory/graph/badge.svg?token=G22GRD1CUF)](https://codecov.io/gh/BoatraceVentureProject/Accessory)

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Boatrace\Venture\Project\Stadiums;
 
+use Boatrace\Venture\Project\Converter;
+use Boatrace\Venture\Project\Exceptions\AccessoryNotFoundException;
 use Carbon\CarbonImmutable as Carbon;
+use Carbon\CarbonInterface;
 
 /**
  * @author shimomo
@@ -12,18 +15,18 @@ use Carbon\CarbonImmutable as Carbon;
 class Stadium10 extends BaseStadium implements StadiumInterface
 {
     /**
-     * @param  int          $raceNumber
-     * @param  string|null  $date
+     * @param  string|int                           $raceCode
+     * @param  \Carbon\CarbonInterface|string|null  $date
      * @return array
      */
-    public function times(int $raceNumber, ?string $date = null): array
+    public function times(string|int $raceCode, CarbonInterface|string|null $date = null): array
     {
         $response = [];
 
-        $date = Carbon::parse($date ?? 'today')->format('Ymd');
+        $carbonDate = Carbon::parse($date ?? 'today');
         $baseUrl = 'https://www.boatrace-mikuni.jp';
         $crawlerFormat = '%s/modules/yosou/group-cyokuzen.php?day=%s&race=%d&kind=2&if=1';
-        $crawlerUrl = sprintf($crawlerFormat, $baseUrl, $date, $raceNumber);
+        $crawlerUrl = sprintf($crawlerFormat, $baseUrl, $carbonDate->format('Ymd'), $raceCode);
         $crawler = $this->httpBrowser->request('GET', $crawlerUrl);
         $times = $this->filterByKeys($crawler, [
             '.com-rname',
@@ -33,67 +36,84 @@ class Stadium10 extends BaseStadium implements StadiumInterface
             '.col8',
         ]);
 
-        foreach (range(1, 6) as $bracket) {
-            $response['bracket_' . $bracket . '_racer_name'] = $this->removeSpace($times['.com-rname'][$bracket - 1] ?? '');
-            $response['bracket_' . $bracket . '_exhibition_time'] = (float) ($times['.col5'][$bracket] ?? 0);
-            $response['bracket_' . $bracket . '_lap_time'] = (float) ($times['.col6'][$bracket] ?? 0);
-            $response['bracket_' . $bracket . '_turn_time'] = (float) ($times['.col7'][$bracket] ?? 0);
-            $response['bracket_' . $bracket . '_straight_time'] = (float) ($times['.col8'][$bracket] ?? 0);
+        foreach (range(1, 6) as $boatNumber) {
+            $racerName = $this->removeSpace($times['.com-rname'][$boatNumber - 1] ?? '');
+            $racerExhibitionTime = Converter::float($times['.col5'][$boatNumber] ?? 0.0);
+            $racerLapTime = Converter::float($times['.col6'][$boatNumber] ?? 0.0);
+            $racerTurnTime = Converter::float($times['.col7'][$boatNumber] ?? 0.0);
+            $racerStraightTime = Converter::float($times['.col8'][$boatNumber] ?? 0.0);
+
+            $response['boat_number_' . $boatNumber . '_racer_name'] = $racerName;
+            $response['boat_number_' . $boatNumber . '_racer_exhibition_time'] = $racerExhibitionTime;
+            $response['boat_number_' . $boatNumber . '_racer_lap_time'] = $racerLapTime;
+            $response['boat_number_' . $boatNumber . '_racer_turn_time'] = $racerTurnTime;
+            $response['boat_number_' . $boatNumber . '_racer_straight_time'] = $racerStraightTime;
         }
 
         return $response;
     }
 
     /**
-     * @param  int          $raceNumber
-     * @param  string|null  $date
+     * @param  string|int                           $raceCode
+     * @param  \Carbon\CarbonInterface|string|null  $date
      * @return array
      */
-    public function comments(int $raceNumber, ?string $date = null): array
+    public function comments(string|int $raceCode, CarbonInterface|string|null $date = null): array
     {
         $response = [];
 
-        $date = Carbon::parse($date ?? 'today')->format('Ymd');
+        $carbonDate = Carbon::parse($date ?? 'today');
         $baseUrl = 'https://www.boatrace-mikuni.jp';
         $crawlerFormat = '%s/modules/yosou/group-syussou.php?day=%s&race=%d&if=1';
-        $crawlerUrl = sprintf($crawlerFormat, $baseUrl, $date, $raceNumber);
+        $crawlerUrl = sprintf($crawlerFormat, $baseUrl, $carbonDate->format('Ymd'), $raceCode);
         $crawler = $this->httpBrowser->request('GET', $crawlerUrl);
-        $comments = $this->filterByKeys($crawler, ['.com-rname', '.col10']);
+        $comments = $this->filterByKeys($crawler, [
+            '.com-rname',
+            '.col10',
+        ]);
 
-        foreach (range(1, 6) as $bracket) {
-            $response['bracket_' . $bracket . '_racer_name'] = $this->removeSpace($comments['.com-rname'][$bracket - 1]);
-            $response['bracket_' . $bracket . '_racer_comment_1_label'] = '前日コメント';
-            $response['bracket_' . $bracket . '_racer_comment_1'] = $this->normalize(preg_split('/過去コメント/u', $comments['.col10'][$bracket])[0] ?? '');
+        foreach (range(1, 6) as $boatNumber) {
+            $racerName = $comments['.com-rname'][$boatNumber - 1];
+            $racerName = $this->removeSpace($racerName);
+
+            $racerYesterdayCommentLabel = '前日コメント';
+            $racerYesterdayComment = $comments['.col10'][$boatNumber];
+            $racerYesterdayComment = preg_split('/過去コメント/u', $racerYesterdayComment);
+            $racerYesterdayComment = $this->normalize($racerYesterdayComment[0] ?? '');
+
+            $response['boat_number_' . $boatNumber . '_racer_name'] = $racerName;
+            $response['boat_number_' . $boatNumber . '_racer_yesterday_comment_label'] = $racerYesterdayCommentLabel;
+            $response['boat_number_' . $boatNumber . '_racer_yesterday_comment'] = $racerYesterdayComment;
         }
 
         return $response;
     }
 
     /**
-     * @param  int          $raceNumber
-     * @param  string|null  $date
+     * @param  string|int                           $raceCode
+     * @param  \Carbon\CarbonInterface|string|null  $date
      * @return array
      */
-    public function forecasts(int $raceNumber, ?string $date = null): array
+    public function forecasts(string|int $raceCode, CarbonInterface|string|null $date = null): array
     {
-        $date = Carbon::parse($date ?? 'today')->format('Ymd');
+        $carbonDate = Carbon::parse($date ?? 'today');
 
         return array_merge(...[
-            $this->fetchYesterdayForecasts($raceNumber, $date),
-            $this->fetchTodayForecasts($raceNumber, $date),
+            $this->fetchYesterdayForecasts($raceCode, $carbonDate),
+            $this->fetchTodayForecasts($raceCode, $carbonDate),
         ]);
     }
 
     /**
-     * @param  int     $raceNumber
-     * @param  string  $date
+     * @param  string|int               $raceCode
+     * @param  \Carbon\CarbonInterface  $carbonDate
      * @return array
      */
-    protected function fetchYesterdayForecasts(int $raceNumber, string $date): array
+    private function fetchYesterdayForecasts(string|int $raceCode, CarbonInterface $carbonDate): array
     {
         $baseUrl = 'https://www.boatrace-mikuni.jp';
         $crawlerFormat = '%s/modules/yosou/group-syussou.php?day=%s&race=%d';
-        $crawlerUrl = sprintf($crawlerFormat, $baseUrl, $date, $raceNumber);
+        $crawlerUrl = sprintf($crawlerFormat, $baseUrl, $carbonDate->format('Ymd'), $raceCode);
         $crawler = $this->httpBrowser->request('GET', $crawlerUrl);
         $forecasts = $this->filterByKeys($crawler, [
             '.z_focus > .focus_list > li',
@@ -103,18 +123,17 @@ class Stadium10 extends BaseStadium implements StadiumInterface
 
         foreach ($forecasts as $key => $value) {
             if (empty($value)) {
-                throw new \Boatrace\Venture\Project\Exceptions\AccessoryNotFoundException(
+                throw new AccessoryNotFoundException(
                     'No data found for key \'' . $key . '\' at \'' . $crawlerUrl . '\'.'
                 );
             }
         }
 
         $reporterYesterdayFocusLabel = '記者予想 前日フォーカス';
-        $jlcYesterdayFocusLabel = 'JLC予想 前日フォーカス';
-        $jlcYesterdayReliabilityLabel = 'JLC予想 前日信頼度';
-
         $reporterYesterdayFocus = $this->normalizeArray($forecasts['.z_focus > .focus_list > li']);
+        $jlcYesterdayFocusLabel = 'JLC予想 前日フォーカス';
         $jlcYesterdayFocus = $this->normalizeArray($forecasts['.j_focus > .focus_list > li']);
+        $jlcYesterdayReliabilityLabel = 'JLC予想 前日信頼度';
         $jlcYesterdayReliability = $this->normalize($forecasts['.j_reliability'][0]);
 
         return [
@@ -128,15 +147,15 @@ class Stadium10 extends BaseStadium implements StadiumInterface
     }
 
     /**
-     * @param  int     $raceNumber
-     * @param  string  $date
+     * @param  string|int               $raceCode
+     * @param  \Carbon\CarbonInterface  $carbonDate
      * @return array
      */
-    protected function fetchTodayForecasts(int $raceNumber, string $date): array
+    private function fetchTodayForecasts(string|int $raceCode, CarbonInterface $carbonDate): array
     {
         $baseUrl = 'https://www.boatrace-mikuni.jp';
         $crawlerFormat = '%s/modules/yosou/group-cyokuzen.php?day=%s&race=%d';
-        $crawlerUrl = sprintf($crawlerFormat, $baseUrl, $date, $raceNumber);
+        $crawlerUrl = sprintf($crawlerFormat, $baseUrl, $carbonDate->format('Ymd'), $raceCode);
         $crawler = $this->httpBrowser->request('GET', $crawlerUrl);
         $forecasts = $this->filterByKeys($crawler, [
             '.cyosou_cmt',
@@ -145,16 +164,15 @@ class Stadium10 extends BaseStadium implements StadiumInterface
 
         foreach ($forecasts as $key => $value) {
             if (empty($value)) {
-                throw new \Boatrace\Venture\Project\Exceptions\AccessoryNotFoundException(
+                throw new AccessoryNotFoundException(
                     'No data found for key \'' . $key . '\' at \'' . $crawlerUrl . '\'.'
                 );
             }
         }
 
         $reporterTodayCommentLabel = '記者予想 当日コメント';
-        $reporterTodayFocusLabel = '記者予想 当日フォーカス';
-
         $reporterTodayComment = $this->normalize($forecasts['.cyosou_cmt'][0]);
+        $reporterTodayFocusLabel = '記者予想 当日フォーカス';
         $reporterTodayFocus = array_values(array_filter($this->normalizeArray(
             preg_split('/\s+/u', str_replace('＜フォーカス＞', '', $forecasts['.cyosou_focus'][0]))
         )));

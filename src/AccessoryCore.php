@@ -9,15 +9,15 @@ use Illuminate\Support\Collection;
 /**
  * @author shimomo
  */
-class MainAccessory
+class AccessoryCore
 {
     /**
      * @return void
      */
     public function __construct()
     {
-        Collection::macro('recursive', fn() => $this->map(fn($value) =>
-            is_array($value) || is_object($value)
+        Collection::macro('recursive', fn() => $this->map(
+            fn($value) => is_array($value) || is_object($value)
                 ? collect($value)->recursive()
                 : $value
         ));

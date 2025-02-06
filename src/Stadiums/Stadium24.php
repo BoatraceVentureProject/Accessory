@@ -71,13 +71,13 @@ class Stadium24 extends BaseStadium implements StadiumInterface
         foreach (range(1, 6) as $bracket) {
             $pattern = '/(.+)(\(当日気配\).+)/u';
             $subject = $comments['.tei' . $bracket][2] ?? '';
-            preg_match($pattern, $subject, $matches);
-
-            if (count($matches) === 0) {
+            if (!preg_match($pattern, $subject, $matches)) {
                 $matches[1] = $subject;
             }
 
-            $response['bracket_' . $bracket . '_racer_name'] = $this->removeSpace($comments['.tei' . $bracket][1] ?? '');
+            $racerName = $comments['.tei' . $bracket][1] ?? '';
+
+            $response['bracket_' . $bracket . '_racer_name'] = $this->removeSpace($racerName);
             $response['bracket_' . $bracket . '_racer_comment_1_label'] = '前日コメント';
             $response['bracket_' . $bracket . '_racer_comment_1'] = $this->normalize($matches[1]);
 
