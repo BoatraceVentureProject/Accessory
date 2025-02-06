@@ -48,4 +48,17 @@ class MainAccessory
             sprintf('Stadium%02d', $stadiumId)
         )->comments($raceNumber, $date))->recursive();
     }
+
+    /**
+     * @param  int          $stadiumId
+     * @param  int          $raceNumber
+     * @param  string|null  $date
+     * @return \Illuminate\Support\Collection
+     */
+    public function forecasts(int $stadiumId, int $raceNumber, ?string $date = null): Collection
+    {
+        return collect(Accessory::getInstance(
+            sprintf('Stadium%02d', $stadiumId)
+        )->forecasts($raceNumber, $date))->recursive();
+    }
 }

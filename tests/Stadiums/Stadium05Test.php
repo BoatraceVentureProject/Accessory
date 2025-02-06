@@ -121,4 +121,48 @@ class Stadium05Test extends PHPUnitTestCase
         $response = $this->stadium->comments(raceNumber: 10, date: '2024-01-03');
         $this->assertSame([], $response);
     }
+
+    /**
+     * @return void
+     */
+    public function testForecastsForRaceNumber1AndDate20240103(): void
+    {
+        $response = $this->stadium->forecasts(raceNumber: 1, date: '2024-01-03');
+        $this->assertSame('記者予想 前日コース', $response['reporter_yesterday_course_label']);
+        $this->assertSame('123/456', $response['reporter_yesterday_course']);
+        $this->assertSame('記者予想 前日フォーカス 2連単', $response['reporter_yesterday_focus_exacta_label']);
+        $this->assertSame(['1=3', '1-4'], $response['reporter_yesterday_focus_exacta']);
+        $this->assertSame('記者予想 前日フォーカス 3連単', $response['reporter_yesterday_focus_trifecta_label']);
+        $this->assertSame(['1=3-4', '1-4-3'], $response['reporter_yesterday_focus_trifecta']);
+        $this->assertSame('記者予想 前日コメント', $response['reporter_yesterday_comment_label']);
+        $this->assertSame('開幕戦地元①相原利の逃げに懸ける。S奮起押し切るか。③青木蓮の25号機前回ターン系に好気配。握れる位置なら1M有利に行けそう。④佐藤航はそれを待つ形。', $response['reporter_yesterday_comment']);
+        $this->assertSame('JLC予想 前日コース', $response['jlc_yesterday_course_label']);
+        $this->assertSame('123456', $response['jlc_yesterday_course']);
+        $this->assertSame('JLC予想 前日フォーカス', $response['jlc_yesterday_focus_label']);
+        $this->assertSame(['1-3-2', '1-2-3', '1-3-4', '1-2-4', '1-4-3'], $response['jlc_yesterday_focus']);
+        $this->assertSame('JLC予想 前日信頼度', $response['jlc_yesterday_reliability_label']);
+        $this->assertSame('55%', $response['jlc_yesterday_reliability']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testForecastsForRaceNumber10AndDate20240103(): void
+    {
+        $response = $this->stadium->forecasts(raceNumber: 10, date: '2024-01-03');
+        $this->assertSame('記者予想 前日コース', $response['reporter_yesterday_course_label']);
+        $this->assertSame('123/456', $response['reporter_yesterday_course']);
+        $this->assertSame('記者予想 前日フォーカス 2連単', $response['reporter_yesterday_focus_exacta_label']);
+        $this->assertSame(['1=3'], $response['reporter_yesterday_focus_exacta']);
+        $this->assertSame('記者予想 前日フォーカス 3連単', $response['reporter_yesterday_focus_trifecta_label']);
+        $this->assertSame(['1-3=4', '1-3=2'], $response['reporter_yesterday_focus_trifecta']);
+        $this->assertSame('記者予想 前日コメント', $response['reporter_yesterday_comment_label']);
+        $this->assertSame('③相原利のスタート力は侮れないが、①尾上雅も先に回れるぐらいには踏み込むとみる。ますはこの先マイ。相原を見て④塚田修がまくり差す。', $response['reporter_yesterday_comment']);
+        $this->assertSame('JLC予想 前日コース', $response['jlc_yesterday_course_label']);
+        $this->assertSame('126345', $response['jlc_yesterday_course']);
+        $this->assertSame('JLC予想 前日フォーカス', $response['jlc_yesterday_focus_label']);
+        $this->assertSame(['1-3-4', '1-4-3', '1-3-2', '1-4-2', '1-2-3'], $response['jlc_yesterday_focus']);
+        $this->assertSame('JLC予想 前日信頼度', $response['jlc_yesterday_reliability_label']);
+        $this->assertSame('80%', $response['jlc_yesterday_reliability']);
+    }
 }

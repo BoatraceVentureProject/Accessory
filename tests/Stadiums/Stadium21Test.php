@@ -155,4 +155,44 @@ class Stadium21Test extends PHPUnitTestCase
         $this->assertSame('前日コメント', $response['bracket_6_racer_comment_1_label']);
         $this->assertSame('出足寄りにして出口で押していた', $response['bracket_6_racer_comment_1']);
     }
+
+    /**
+     * @return void
+     */
+    public function testForecastsForRaceNumber1AndDate20240101(): void
+    {
+        $response = $this->stadium->forecasts(raceNumber: 1, date: '2024-01-01');
+        $this->assertSame('記者予想 前日コース', $response['reporter_yesterday_course_label']);
+        $this->assertSame('123/456', $response['reporter_yesterday_course']);
+        $this->assertSame('記者予想 前日フォーカス 2連単', $response['reporter_yesterday_focus_exacta_label']);
+        $this->assertSame(['1=3', '1-2', '1-4'], $response['reporter_yesterday_focus_exacta']);
+        $this->assertSame('記者予想 前日フォーカス 3連単', $response['reporter_yesterday_focus_trifecta_label']);
+        $this->assertSame(['1=3-2', '1-3-4', '1-2-3', '1-2-4'], $response['reporter_yesterday_focus_trifecta']);
+        $this->assertSame('記者予想 前日コメント', $response['reporter_yesterday_comment_label']);
+        $this->assertSame('新年一発目は①新開の逃走で決まり。快速機と組む③中渡と差し粘る②松尾の連争いに、日に日に照準を合わせてきている④羽野が合流する。', $response['reporter_yesterday_comment']);
+        $this->assertSame('JLC予想 前日フォーカス', $response['jlc_yesterday_focus_label']);
+        $this->assertSame(['1-2-3', '1-3-2', '1-2-4', '1-3-4', '1-4-2'], $response['jlc_yesterday_focus']);
+        $this->assertSame('JLC予想 前日信頼度', $response['jlc_yesterday_reliability_label']);
+        $this->assertSame('85%', $response['jlc_yesterday_reliability']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testForecastsForRaceNumber2AndDate20240101(): void
+    {
+        $response = $this->stadium->forecasts(raceNumber: 2, date: '2024-01-01');
+        $this->assertSame('記者予想 前日コース', $response['reporter_yesterday_course_label']);
+        $this->assertSame('123/456', $response['reporter_yesterday_course']);
+        $this->assertSame('記者予想 前日フォーカス 2連単', $response['reporter_yesterday_focus_exacta_label']);
+        $this->assertSame(['1=4', '1-3', '1-6'], $response['reporter_yesterday_focus_exacta']);
+        $this->assertSame('記者予想 前日フォーカス 3連単', $response['reporter_yesterday_focus_trifecta_label']);
+        $this->assertSame(['1=4-3', '1-4-6', '1-3-4', '1-3-6'], $response['reporter_yesterday_focus_trifecta']);
+        $this->assertSame('記者予想 前日コメント', $response['reporter_yesterday_comment_label']);
+        $this->assertSame('インに構える①中と、カド自在に攻める④塩田の一騎打ちムードだが、安定感がある③松尾も侮れない存在。好出足がある⑥田中は最内から。', $response['reporter_yesterday_comment']);
+        $this->assertSame('JLC予想 前日フォーカス', $response['jlc_yesterday_focus_label']);
+        $this->assertSame(['4-1-3', '4-1-6', '1-4-3', '1-4-6', '4-3-1'], $response['jlc_yesterday_focus']);
+        $this->assertSame('JLC予想 前日信頼度', $response['jlc_yesterday_reliability_label']);
+        $this->assertSame('85%', $response['jlc_yesterday_reliability']);
+    }
 }

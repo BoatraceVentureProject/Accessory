@@ -121,4 +121,32 @@ class Stadium11Test extends PHPUnitTestCase
         $response = $this->stadium->comments(raceNumber: 2, date: '2024-01-03');
         $this->assertSame([], $response);
     }
+
+    /**
+     * @return void
+     */
+    public function testForecastsForRaceNumber1AndDate20240103(): void
+    {
+        $response = $this->stadium->forecasts(raceNumber: 1, date: '2024-01-03');
+        $this->assertSame('記者予想 前日コース', $response['reporter_yesterday_course_label']);
+        $this->assertSame('123/456', $response['reporter_yesterday_course']);
+        $this->assertSame('記者予想 前日フォーカス', $response['reporter_yesterday_focus_label']);
+        $this->assertSame(['1=4-5', '1=4-6', '1-5-4', '1-6-4', '1-5-6'], $response['reporter_yesterday_focus']);
+        $this->assertSame('記者予想 前日コメント', $response['reporter_yesterday_comment_label']);
+        $this->assertSame('オープニングカードは山田が絶好枠。気合のインS攻勢で白星ゲットあるのみだ。ただ好調機を駆って前検好況な和田の一撃は逆転まで。川島、吉田が展開突いて', $response['reporter_yesterday_comment']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testForecastsForRaceNumber2AndDate20240103(): void
+    {
+        $response = $this->stadium->forecasts(raceNumber: 2, date: '2024-01-03');
+        $this->assertSame('記者予想 前日コース', $response['reporter_yesterday_course_label']);
+        $this->assertSame('123/456', $response['reporter_yesterday_course']);
+        $this->assertSame('記者予想 前日フォーカス', $response['reporter_yesterday_focus_label']);
+        $this->assertSame(['3=4-1', '3=4-5', '3-1-4', '3-5-4', '3-1-5'], $response['reporter_yesterday_focus']);
+        $this->assertSame('記者予想 前日コメント', $response['reporter_yesterday_comment_label']);
+        $this->assertSame('前検気配は上々だった鶴本のセンター自在攻勢を本命視。吉川喜はその動きを見て逆転狙って。松浦は好枠を生かしたいところ。渡邉が巧腕さばき駆使して浮上へ', $response['reporter_yesterday_comment']);
+    }
 }
